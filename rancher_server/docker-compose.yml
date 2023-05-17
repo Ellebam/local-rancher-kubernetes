@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  rancher:
+    image: rancher/rancher:latest
+    container_name: rancher_server
+    hostname: rancher.local
+    networks:
+      rumil_network:
+        aliases:
+          - rancher.local
+    restart: unless-stopped
+    privileged: True
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      CATTLE_BOOTSTRAP_PASSWORD: "limur"
+      CATTLE_BOOTSTRAP_ADMIN_USER: "rumil"
+      CATTLE_BOOTSTRAP_ADMIN_SSHKEY: <PASTE_PUBKEY_HERE>
+
+networks:
+  rumil_network:
+    name: rumil_network
+    driver: bridge
